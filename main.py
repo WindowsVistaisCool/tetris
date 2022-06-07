@@ -2,7 +2,7 @@ import pygame
 import enum
 import os
 import random
-from typing import Tuple, Optional, Union
+from typing import Tuple, Optional, Union ##import all needed modules
 
 """
 ISSUES (Delete if fixed):

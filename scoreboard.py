@@ -18,12 +18,12 @@ scores = [] ## list to store user scores in order
 names = [] ## list to hold user names in order
 @app.route('/') ## start server
 
-def index(): ## when ip is send
+def index(): ## when recieved a post request
 
     return ('AKZ server') ## when web browser is started
 
 @app.route('/test', methods=['POST'])
-def test():
+def test(): ## test method for post request
 
     name = request.json['name'] ## take the username from the list post request
 

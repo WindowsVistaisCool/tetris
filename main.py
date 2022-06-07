@@ -2,7 +2,7 @@ import pygame
 import enum
 import os
 import random
-from typing import Tuple, Optional, Union ##import all needed modules
+from typing import Tuple, Optional, Union
 
 """
 ISSUES (Delete if fixed):
@@ -338,9 +338,10 @@ def updatePieces(awaitingPiece) -> Tuple[Piece, AwaitingPiece]:
   return convertedSprite, new
 
 def lineCheck(scoreNum: int, lockedPieces: pygame.sprite.Group) -> Optional[gameState]:
-  potentialLines = [0 for _ in range(20)]
+  potentialLines = [0 for _ in range(20)] # one item for each row on the grid
   detectedLines = []
-  
+
+  # checks each line (and if the pieces have gone too far up resulting in a game over)
   for lockedPiece in lockedPieces:
     pieceY = (lockedPiece.rect[1] - gridPos[0][1]) / interval
     if pieceY <= 1: 
@@ -348,25 +349,26 @@ def lineCheck(scoreNum: int, lockedPieces: pygame.sprite.Group) -> Optional[game
     partialPieceCoords = lockedPiece.getCoords()
     for coord in partialPieceCoords:
       potentialLines[int((coord[1] - gridPos[0][1]) / interval)] += 1
-      
+
+  # checks each number in potentialLines to see if it has all 9 blocks in a line
   for i in range(len(potentialLines)):
     if potentialLines[i] >= 9:
       detectedLines.append(i)
   
   if any(detectedLines): 
     for x in detectedLines:
-      scoreNum += 50
+      scoreNum += 50 #score increase if complete line
       lineY = x * 30 + 30
       for i in lockedPieces:
         inLine = False
-        for y in range(i.rect.top, i.rect.bottom + 1):
+        for y in range(i.rect.top, i.rect.bottom + 1): #for all y pos in shape
           if y == lineY:
             inLine = True
             break
-        if inLine == True:
+        if inLine == True: #if piece is part of line
           lockedPieces.remove(i)
         elif i.rect.top < lineY or i.rect.bottom != 600:
-          while i.rect.bottom != 600:
+          while i.rect.bottom != 600: 
             i.rect[1] += 30
   return scoreNum, None
         
@@ -384,11 +386,13 @@ clock = pygame.time.Clock()
 pygame.display.set_caption('Tetris')
 global font
 font = pygame.font.Font('freesansbold.ttf', 32)
+
+# Adam got from a source from the text stack overflow link in the canvas assignment document
 def generate_text(text: Tuple[str], center: Tuple[int, int], *, color: Tuple[int, int, int] = (0, 0, 0), textFont = font) -> callable:
   text = textFont.render(text, True, color)
   rect = text.get_rect()
   rect.center = center
-  return lambda: screen.blit(text, rect)
+  return lambda: screen.blit(text, rect) # returns a callable so it can draw
 
 # main title screen
 def main() -> None:

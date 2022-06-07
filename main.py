@@ -498,7 +498,7 @@ def game() -> None:
     if doFall/1000 > 0.25: # move a piece every 250ms
       doFall = 0
       score += 1
-      # currentSprite.move(pieceDirection.DOWN)
+      currentSprite.move(pieceDirection.DOWN)
     screen.fill((255, 255, 255))
     drawGrid()
     groupCurrent.draw(screen)

@@ -1,17 +1,9 @@
 import pygame
 import enum
 import os
-import requests
 import random
+import requests
 from typing import Tuple, Optional, Union
-uname = input('username:')
-"""
-ISSUES (Delete if fixed):
-
--Objects clip through edge when rotating
--Z and T collsion errors
-
-"""
 
 class pieceShape(enum.Enum):
   """
@@ -357,7 +349,6 @@ def lineCheck(scoreNum: int, lockedPieces: pygame.sprite.Group) -> Optional[game
       detectedLines.append(i)
   
   if any(detectedLines): 
-    requests.post("http://10.168.94.196/test", json={'name':uname}).json()
     for x in detectedLines:
       scoreNum += 50 #score increase if complete line
       lineY = x * 30 + 30
@@ -399,8 +390,9 @@ def generate_text(text: Tuple[str], center: Tuple[int, int], *, color: Tuple[int
 # main title screen
 def main() -> None:
   starting = False
-
-  mainText = generate_text(("Press SPACE to start"), (250, 315))
+  
+  
+  texts = [generate_text(("Press SPACE to start"), (250, 200)), generate_text(("Move left:    Left Key"), (250, 250)), generate_text(("Move right:    Right Key"), (250, 300)), generate_text(("Move down faster:  Down Key"), (250, 350)), generate_text(("Rotate Piece:    Up Key"), (250, 400))]
   
   while True:
     for event in pygame.event.get():
@@ -408,7 +400,7 @@ def main() -> None:
         starting = True
     if starting: break
     screen.fill((255, 255, 255))
-    mainText()
+    for i in texts: i()
     pygame.display.update()
   if starting: game()
   pygame.quit()
@@ -518,5 +510,7 @@ def game() -> None:
     lockedSprites.draw(screen)
     pygame.display.update()
 
+global userName
+userName = input("Username: ")
 # Start the main menu
 main()

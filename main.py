@@ -4,14 +4,6 @@ import os
 import random
 from typing import Tuple, Optional, Union
 
-"""
-ISSUES (Delete if fixed):
-
--Objects clip through edge when rotating
--Z and T collsion errors
-
-"""
-
 class pieceShape(enum.Enum):
   """
   Enum used to define piece shapes
@@ -397,8 +389,9 @@ def generate_text(text: Tuple[str], center: Tuple[int, int], *, color: Tuple[int
 # main title screen
 def main() -> None:
   starting = False
-
-  mainText = generate_text(("Press SPACE to start"), (250, 315))
+  
+  
+  texts = [generate_text(("Press SPACE to start"), (250, 200)), generate_text(("Move left:    Left Key"), (250, 250)), generate_text(("Move right:    Right Key"), (250, 300)), generate_text(("Move down faster:  Down Key"), (250, 350)), generate_text(("Rotate Piece:    Up Key"), (250, 400))]
   
   while True:
     for event in pygame.event.get():
@@ -406,7 +399,7 @@ def main() -> None:
         starting = True
     if starting: break
     screen.fill((255, 255, 255))
-    mainText()
+    for i in texts: i()
     pygame.display.update()
   if starting: game()
   pygame.quit()
@@ -516,5 +509,7 @@ def game() -> None:
     lockedSprites.draw(screen)
     pygame.display.update()
 
+global userName
+userName = None#input("Username: ")
 # Start the main menu
 main()
